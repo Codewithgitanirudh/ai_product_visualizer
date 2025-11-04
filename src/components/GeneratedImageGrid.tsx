@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { GeneratedImage } from '../types';
+import type { GeneratedImage } from '../../types';
 
 interface GeneratedImageGridProps {
   isLoading: boolean;
@@ -12,6 +12,12 @@ interface GeneratedImageGridProps {
 
 const ImageCard: React.FC<{ image: GeneratedImage; isSelected: boolean; onSelect: (id: string) => void; }> = ({ image, isSelected, onSelect }) => {
   const selectionClass = isSelected ? 'ring-4 ring-brand-primary' : 'ring-2 ring-transparent hover:ring-brand-secondary';
+  
+  // Use URL directly if it starts with http, otherwise treat as base64
+  const imageSrc = image.src.startsWith('http') 
+    ? image.src 
+    : `data:${image.mimeType};base64,${image.src}`;
+  
   return (
     <div 
         key={image.id}
@@ -19,7 +25,7 @@ const ImageCard: React.FC<{ image: GeneratedImage; isSelected: boolean; onSelect
         onClick={() => onSelect(image.id)}
     >
       <img 
-        src={`data:${image.mimeType};base64,${image.src}`} 
+        src={imageSrc}
         alt="Generated visualization"
         className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-105 ${selectionClass}`}
       />
