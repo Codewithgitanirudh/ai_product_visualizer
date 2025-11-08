@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
       server: {
-        port: 3000,
+        port: parseInt(env.VITE_PORT || '3000'),
         host: '0.0.0.0',
         proxy: {
           '/api/freepik': {
@@ -23,6 +23,11 @@ export default defineConfig(({ mode }) => {
                 }
               });
             },
+          },
+          '/api/preview': {
+            target: 'https://ai-product-visualizer-ebon.vercel.app',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api\/preview/, ''),
           },
         },
       },
