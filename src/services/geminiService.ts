@@ -3,7 +3,9 @@ import type { OriginalImage } from "../../types";
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 if (!API_KEY) {
-  console.warn("API_KEY environment variable not set. App will not function correctly.");
+  console.warn(
+    "API_KEY environment variable not set. App will not function correctly."
+  );
 }
 
 const ai = new GoogleGenAI({ apiKey: API_KEY! });
@@ -13,7 +15,9 @@ const fileToGenerativePart = (base64Data: string, mimeType: string) => ({
   inlineData: { data: base64Data, mimeType },
 });
 
-const extractImageFromResponse = (response: GenerateContentResponse): string | null => {
+const extractImageFromResponse = (
+  response: GenerateContentResponse
+): string | null => {
   for (const part of response.candidates?.[0]?.content?.parts || []) {
     if (part.inlineData) {
       return part.inlineData.data;
@@ -23,7 +27,7 @@ const extractImageFromResponse = (response: GenerateContentResponse): string | n
 };
 
 // Helper to delay polling
-const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
+const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 // Polls the task until it’s complete or fails
 async function pollTask(taskId: string, baseUrl: string): Promise<string> {
@@ -52,7 +56,10 @@ async function pollTask(taskId: string, baseUrl: string): Promise<string> {
 export const generateVisualizations = async (
   productImage: OriginalImage
 ): Promise<string[]> => {
-  const imagePart = fileToGenerativePart(productImage.base64, productImage.mimeType);
+  const imagePart = fileToGenerativePart(
+    productImage.base64,
+    productImage.mimeType
+  );
   const url = "/api/freepik/v1/ai/gemini-2-5-flash-image-preview";
 
   const prompts = [
@@ -79,13 +86,15 @@ export const generateVisualizations = async (
 
   // Poll all tasks in parallel
   const results = await Promise.allSettled(
-    taskIds.map(taskId => pollTask(taskId, url))
+    taskIds.map((taskId) => pollTask(taskId, url))
   );
 
   // Return successful results
   return results
-    .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled')
-    .map(r => r.value);
+    .filter(
+      (r): r is PromiseFulfilledResult<string> => r.status === "fulfilled"
+    )
+    .map((r) => r.value);
 };
 
 export const editImage = async (
@@ -93,15 +102,23 @@ export const editImage = async (
   prompt: string
 ): Promise<string> => {
   const imagePart = fileToGenerativePart(image.base64, image.mimeType);
-  const response = await ai.models.generateContent({
-    model,
-    contents: { parts: [imagePart, { text: prompt }] },
-    config: { responseModalities: [Modality.IMAGE] },
-  });
 
-  const result = extractImageFromResponse(response);
-  if (!result) {
-    throw new Error("Failed to edit image or extract it from the response.");
-  }
+  const url = "/api/freepik/v1/ai/gemini-2-5-flash-image-preview";
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      prompt,
+      reference_images: [imagePart.inlineData.data],
+    }),
+  });
+  const { data } = await response.json();
+  const taskId = data.task_id;
+  console.log('taskId', taskId);
+
+  const result = await pollTask(taskId, url);
+  console.log('result', result);
   return result;
+
 };

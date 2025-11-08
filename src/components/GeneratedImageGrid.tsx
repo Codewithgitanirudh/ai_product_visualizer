@@ -14,9 +14,9 @@ const ImageCard: React.FC<{ image: GeneratedImage; isSelected: boolean; onSelect
   const selectionClass = isSelected ? 'ring-4 ring-brand-primary' : 'ring-2 ring-transparent hover:ring-brand-secondary';
   
   // Use URL directly if it starts with http, otherwise treat as base64
-  const imageSrc = image.src.startsWith('http') 
-    ? image.src 
-    : `data:${image.mimeType};base64,${image.src}`;
+  // const imageSrc = image.src.startsWith('http') 
+  //   ? image.src 
+  //   : `data:${image.mimeType};base64,${image.src}`;
   
   return (
     <div 
@@ -25,7 +25,7 @@ const ImageCard: React.FC<{ image: GeneratedImage; isSelected: boolean; onSelect
         onClick={() => onSelect(image.id)}
     >
       <img 
-        src={imageSrc}
+        src={image.src}
         alt="Generated visualization"
         className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-105 ${selectionClass}`}
       />
