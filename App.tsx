@@ -7,10 +7,12 @@ import { Header } from './src/components/Header';
 import { ImageUploader } from './src/components/ImageUploader';
 import { GeneratedImageGrid } from './src/components/GeneratedImageGrid';
 import { EditPanel } from './src/components/EditPanel';
+const imgSrc1 = "https://images.pexels.com/photos/1315655/pexels-photo-1315655.jpeg?auto=compress&cs=tinysrgb&";
+const imgSrc2 = "https://images.pexels.com/photos/1315655/pexels-photo-1315655.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
 const App: React.FC = () => {
   const [originalImage, setOriginalImage] = useState<OriginalImage | null>(null);
-  const [generatedImages, setGeneratedImages] = useState<GeneratedImage[]>([]);
+  const [generatedImages, setGeneratedImages] = useState<GeneratedImage[]>([ { id: imgSrc1, src: imgSrc1, isEditing: false, mimeType: 'image/jpeg' }, { id: imgSrc2, src: imgSrc2, isEditing: false, mimeType: 'image/jpeg' } ]);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [editPrompt, setEditPrompt] = useState<string>('');
   const [error, setError] = useState<string | null>(null);

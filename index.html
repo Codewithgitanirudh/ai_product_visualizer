@@ -1,28 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Product Visualizer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'brand-primary': '#4f46e5',
-              'brand-secondary': '#7c3aed',
-              'base-100': '#1f2937',
-              'base-200': '#374151',
-              'base-300': '#4b5563',
-              'content-100': '#d1d5db',
-              'content-200': '#9ca3af',
-            },
-          },
-        },
-      }
-    </script>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Product Visualizer</title>
+  <link href="/index.css" rel="stylesheet">
   <script type="importmap">
 {
   "imports": {
@@ -33,10 +16,11 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-base-100 text-content-100">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+
+<body class="bg-base-100 text-content-100">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
 </html>
