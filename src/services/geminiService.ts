@@ -11,6 +11,8 @@ const fileToGenerativePart = (base64Data: string, mimeType: string) => ({
   inlineData: { data: base64Data, mimeType },
 });
 
+const url = `${import.meta.env.VITE_APP_URL}/api/generate-image`;
+
 // Helper to delay polling
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -41,11 +43,11 @@ async function pollTask(taskId: string, baseUrl: string): Promise<string> {
 export const generateVisualizations = async (
   productImage: OriginalImage
 ): Promise<string[]> => {
+
   const imagePart = fileToGenerativePart(
     productImage.base64,
     productImage.mimeType
   );
-  const url = `${import.meta.env.VITE_APP_URL}/api/generate-image`;
 
   const prompts = [
     "Place this product onto a white coffee mug. The mug is on a wooden table in a bright, modern cafe. The product should be clearly visible and centered on the mug.",
@@ -88,8 +90,6 @@ export const editImage = async (
 ): Promise<string> => {
   const imagePart = fileToGenerativePart(image.base64, image.mimeType);
 
-  const url = "/api/freepik/v1/ai/gemini-2-5-flash-image-preview";
-
   const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -100,10 +100,8 @@ export const editImage = async (
   });
   const { data } = await response.json();
   const taskId = data.task_id;
-  console.log('taskId', taskId);
 
   const result = await pollTask(taskId, url);
-  console.log('result', result);
   return result;
 
 };
