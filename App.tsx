@@ -81,19 +81,22 @@ const App: React.FC = () => {
   const isEditing = selectedImage?.isEditing || false;
   
   return (
-    <div className="min-h-screen bg-base-100 flex flex-col">
+    <div className="min-h-screen bg-base-200 flex flex-col">
       <Header />
-      <main className="container mx-auto p-4 md:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="container mx-auto p-4 md:p-8 flex-1">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
           <aside className="lg:col-span-4 xl:col-span-3 space-y-6">
-            <h2 className="text-xl font-bold text-content-100 border-b border-base-300 pb-2">Controls</h2>
+            <div className="bg-white p-5 rounded-xl border border-base-400 shadow-sm">
+              <h2 className="text-xl font-bold text-content-100">Controls</h2>
+              <p className="text-sm text-content-300 mt-1">Upload and generate AI visualizations</p>
+            </div>
             <ImageUploader onImageUpload={handleImageUpload} originalImage={originalImage} />
             
             {originalImage && (
               <button
                 onClick={handleGenerateVisualizations}
                 disabled={isGenerating}
-                className="w-full bg-brand-primary hover:bg-brand-secondary text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 disabled:bg-base-300 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full bg-linear-to-r from-brand-primary to-brand-secondary hover:from-brand-secondary hover:to-brand-accent text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-300 disabled:from-base-400 disabled:to-base-400 disabled:cursor-not-allowed disabled:opacity-60 flex items-center justify-center shadow-md hover:shadow-lg disabled:shadow-sm"
               >
                 {isGenerating ? (
                   <>
@@ -103,7 +106,7 @@ const App: React.FC = () => {
                     </svg>
                     Generating...
                   </>
-                ) : generatedImages.length > 0 ? "Re-generate" : "Generate Visualizations"}
+                ) : generatedImages.length > 0 ? "Re-generate Visualizations" : "Generate Visualizations"}
               </button>
             )}
 

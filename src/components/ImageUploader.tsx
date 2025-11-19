@@ -1,6 +1,5 @@
-
 import React, { useRef } from 'react';
-import type { OriginalImage } from '../types';
+import type { OriginalImage } from '../../types';
 
 interface ImageUploaderProps {
   onImageUpload: (file: File) => void;
@@ -36,11 +35,16 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, ori
   };
 
   return (
-    <div className="bg-base-200 p-4 rounded-lg">
-      <h3 className="font-semibold mb-2">1. Upload Product Image</h3>
+    <div className="bg-white p-6 rounded-xl border border-base-400 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-8 h-8 rounded-lg bg-linear-to-br from-brand-primary to-brand-secondary flex items-center justify-center">
+          <span className="text-white font-bold text-sm">1</span>
+        </div>
+        <h3 className="font-semibold text-content-100 text-lg">Upload Product Image</h3>
+      </div>
       {originalImage ? (
-        <div className="space-y-3">
-          <div className="aspect-square w-full rounded-lg overflow-hidden border-2 border-base-300">
+        <div className="space-y-4">
+          <div className="aspect-square w-full rounded-xl overflow-hidden border-2 border-base-400 shadow-inner bg-base-300">
             <img 
               src={URL.createObjectURL(originalImage.file)} 
               alt="Original product" 
@@ -49,7 +53,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, ori
           </div>
           <button
             onClick={triggerFileInput}
-            className="w-full bg-base-300 hover:bg-brand-primary text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+            className="w-full bg-base-300 hover:bg-base-400 text-content-100 font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md border border-base-400"
           >
             Change Image
           </button>
@@ -59,16 +63,18 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, ori
           onClick={triggerFileInput}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="aspect-square w-full border-2 border-dashed border-base-300 rounded-lg flex flex-col items-center justify-center text-center p-4 cursor-pointer hover:border-brand-primary hover:bg-base-300 transition-colors duration-200"
+          className="aspect-square w-full border-2 border-dashed border-base-400 rounded-xl flex flex-col items-center justify-center text-center p-8 cursor-pointer hover:border-brand-primary hover:bg-base-200 transition-all duration-200 bg-base-300 group"
         >
-           <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-content-200 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mb-4 p-4 rounded-full bg-linear-to-br from-brand-primary/10 to-brand-secondary/10 group-hover:from-brand-primary/20 group-hover:to-brand-secondary/20 transition-all duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-4-4V6a4 4 0 014-4h10a4 4 0 014 4v6a4 4 0 01-4 4H7z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m3-3H7" />
             </svg>
-          <p className="text-content-200">
-            <span className="font-semibold text-brand-secondary">Click to upload</span> or drag and drop
+          </div>
+          <p className="text-content-200 font-medium mb-1">
+            <span className="font-semibold text-brand-primary">Click to upload</span> or drag and drop
           </p>
-          <p className="text-xs text-content-200 mt-1">PNG, JPG, WEBP</p>
+          <p className="text-xs text-content-300">PNG, JPG, WEBP up to 10MB</p>
         </div>
       )}
       <input

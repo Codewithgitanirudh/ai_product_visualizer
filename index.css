@@ -1,20 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-primary: #4f46e5;
-  --color-brand-secondary: #7c3aed;
-  --color-base-100: #1f2937;
-  --color-base-200: #374151;
-  --color-base-300: #4b5563;
-  --color-content-100: #d1d5db;
-  --color-content-200: #9ca3af;
+  /* Modern Light Color Palette */
+  --color-brand-primary: #6366f1;
+  --color-brand-secondary: #8b5cf6;
+  --color-brand-accent: #a78bfa;
+  
+  /* Light Background Colors */
+  --color-base-100: #ffffff;
+  --color-base-200: #f8fafc;
+  --color-base-300: #f1f5f9;
+  --color-base-400: #e2e8f0;
+  
+  /* Text Colors */
+  --color-content-100: #0f172a;
+  --color-content-200: #475569;
+  --color-content-300: #64748b;
+  
+  /* Border Colors */
+  --color-border-light: #e2e8f0;
+  --color-border-medium: #cbd5e1;
+  
+  /* Shadow Colors */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .animate-fadeIn {
-    animation: fadeIn 0.2s ease-in-out;
-  }
-  
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Smooth transitions for interactive elements
+* {
+  transition-property: color, background-color, border-color, transform, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+   */
