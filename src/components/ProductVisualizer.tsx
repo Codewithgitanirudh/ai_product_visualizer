@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { generateVisualizations, editImage } from '../services/geminiService';
 import type { GeneratedImage, OriginalImage } from '../../types';
 import { fileToBase64 } from '../../utils/fileUtils';
-import { Header } from './Header';
 import { ImageUploader } from './ImageUploader';
 import { GeneratedImageGrid } from './GeneratedImageGrid';
 import { EditPanel } from './EditPanel';

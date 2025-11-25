@@ -48,7 +48,7 @@ export function Sidebar () {
               }}
               className={`
                 w-full flex items-center gap-3 px-4 py-3 rounded-lg
-                transition-all duration-200
+                transition-all duration-200 cursor-pointer
                 ${
                   isActive(item.path)
                     ? 'bg-brand-primary text-white shadow-md'

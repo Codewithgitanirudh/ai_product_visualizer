@@ -30,7 +30,7 @@ function AppHeader() {
       >
         <Menu className="w-7 h-7" />
       </button>
-      <Header className="pl-12" />
+      <Header />
     </div>
   );
 }
