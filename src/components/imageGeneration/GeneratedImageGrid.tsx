@@ -1,8 +1,8 @@
-import type { GeneratedImage } from "../../types";
+import { GeneratedImage } from '@/types';
 import { DownloadIcon, SquarePenIcon, X, XIcon } from "lucide-react";
 import { Tooltip } from "@mui/material";
 import React, { useState } from "react";
-import { Loader } from "./Loader";
+import { Loader } from '../Loader';
 
 interface GeneratedImageGridProps {
   isLoading: boolean;

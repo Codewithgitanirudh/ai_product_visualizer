@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 import { LandingPage } from '../components/LandingPage';
-import { ProductVisualizer } from '../components/ProductVisualizer';
+import { ProductVisualizer } from '../components/imageGeneration/ProductVisualizer';
 import { ChatPage } from '../components/ChatPage';
 import { AudioToolsPage } from '../components/AudioToolsPage';
 import App from '../../App';

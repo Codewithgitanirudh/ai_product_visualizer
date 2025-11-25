@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonLoader } from './Loader';
+import { ButtonLoader } from '../Loader';
 
 interface EditPanelProps {
   prompt: string;

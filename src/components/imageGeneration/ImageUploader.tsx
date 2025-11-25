@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import type { OriginalImage } from '../../types';
 import { UploadIcon } from 'lucide-react';
+import { OriginalImage } from '@/types';
 
 interface ImageUploaderProps {
   onImageUpload: (file: File) => void;

@@ -1,11 +1,4 @@
-import type { OriginalImage } from "../../types";
-
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-if (!API_KEY) {
-  console.warn(
-    "API_KEY environment variable not set. App will not function correctly."
-  );
-}
+import { OriginalImage } from '@/types';
 
 const fileToGenerativePart = (base64Data: string, mimeType: string) => ({
   inlineData: { data: base64Data, mimeType },

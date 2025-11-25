@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import { generateVisualizations, editImage } from '../services/geminiService';
-import type { GeneratedImage, OriginalImage } from '../../types';
-import { fileToBase64 } from '../../utils/fileUtils';
 import { ImageUploader } from './ImageUploader';
 import { GeneratedImageGrid } from './GeneratedImageGrid';
 import { EditPanel } from './EditPanel';
-import { ButtonLoader } from './Loader';
+import { fileToBase64 } from '@/utils/fileUtils';
+import { GeneratedImage, OriginalImage } from '@/types';
+import { ButtonLoader } from '../Loader';
+import { editImage, generateVisualizations } from '@/src/services/geminiService';
 
 export const ProductVisualizer: React.FC = () => {
   const [originalImage, setOriginalImage] = useState<OriginalImage | null>(null);
