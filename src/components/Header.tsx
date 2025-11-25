@@ -12,8 +12,8 @@ export const Header: React.FC = () => {
              </svg>
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-content-100 tracking-tight">AI Product Visualizer</h1>
-            <p className="text-xs text-content-300 font-medium">Transform products with AI-powered visualizations</p>
+            <h1 className="text-2xl font-bold text-content-100 tracking-tight">Omnexia AI</h1>
+            <p className="text-xs text-content-300 font-medium tracking-tight mt-1">Transform products with AI-powered visualizations</p>
           </div>
         </Link>
       </div>
