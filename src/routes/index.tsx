@@ -1,10 +1,9 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 import { LandingPage } from '../components/LandingPage';
 import { ProductVisualizer } from '../components/ProductVisualizer';
-import { Dashboard } from '../components/Dashboard';
-import { GenerateImagePage } from '../components/GenerateImagePage';
 import { ChatPage } from '../components/ChatPage';
 import { AudioToolsPage } from '../components/AudioToolsPage';
+import App from '../../App';
 
 export const router = createBrowserRouter([
   {
@@ -12,12 +11,8 @@ export const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: '/app',
-    element: <ProductVisualizer />,
-  },
-  {
     path: '/dashboard',
-    element: <Dashboard />,
+    element: <App />,
     children: [
       {
         index: true,
