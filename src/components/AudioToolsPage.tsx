@@ -1,7 +1,7 @@
-import React from 'react';
+
 import { Music } from 'lucide-react';
 
-export const AudioToolsPage: React.FC = () => {
+export default function AudioToolsPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="bg-base-100 rounded-lg shadow-md p-8">
@@ -17,5 +17,5 @@ export const AudioToolsPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 

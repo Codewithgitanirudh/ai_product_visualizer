@@ -7,7 +7,7 @@ interface ImageUploaderProps {
   originalImage: OriginalImage | null;
 }
 
-export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, originalImage }) => {
+export default function ImageUploader({ onImageUpload, originalImage }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

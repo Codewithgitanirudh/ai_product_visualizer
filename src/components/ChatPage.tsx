@@ -1,7 +1,7 @@
 import React from 'react';
 import { MessageSquare } from 'lucide-react';
 
-export const ChatPage: React.FC = () => {
+export default function ChatPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="bg-base-100 rounded-lg shadow-md p-8">

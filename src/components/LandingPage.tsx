@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { Sparkles, Image as ImageIcon, Zap, Palette, ArrowRight, Check } from 'lucide-react';
 
-export const LandingPage: React.FC = () => {
+export default function LandingPage() {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -186,5 +186,5 @@ export const LandingPage: React.FC = () => {
       </footer>
     </div>
   );
-};
+}
 

@@ -1,13 +1,14 @@
-import React, { useState, useCallback } from 'react';
-import { ImageUploader } from './ImageUploader';
-import { GeneratedImageGrid } from './GeneratedImageGrid';
-import { EditPanel } from './EditPanel';
+import React, { useState, useCallback, lazy } from 'react';
 import { GeneratedImage, OriginalImage } from '@/types';
 import { ButtonLoader } from '../Loader';
 import { fileToBase64 } from '../../../utils/fileUtils';
 import { editImage, generateVisualizations } from '../../../src/services/geminiService';
 
-export const ProductVisualizer: React.FC = () => {
+const ImageUploader = lazy(() => import('./ImageUploader'));
+const EditPanel = lazy(() => import('./EditPanel'));  
+const GeneratedImageGrid = lazy(() => import('./GeneratedImageGrid'));
+
+export default function ProductVisualizer() {
   const [originalImage, setOriginalImage] = useState<OriginalImage | null>(null);
   const [generatedImages, setGeneratedImages] = useState<GeneratedImage[]>([]);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
@@ -128,5 +129,5 @@ export const ProductVisualizer: React.FC = () => {
       </main>
     </div>
   );
-};
+}
 

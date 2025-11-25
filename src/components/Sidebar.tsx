@@ -1,8 +1,8 @@
 import React from 'react';
 import { ImageIcon, MessageSquare, Music } from 'lucide-react';
-import { Header } from './Header';
 import { useSidebarContext } from '../../context/contextProvider';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { lazy } from 'react';
 
 interface NavItem {
   id: string;
@@ -10,6 +10,8 @@ interface NavItem {
   icon: React.ReactNode;
   path: string;
 }
+
+const Header = lazy(() => import('./Header'));
 
 const navItems: NavItem[] = [
   {
@@ -32,7 +34,7 @@ const navItems: NavItem[] = [
   },
 ];
 
-export function Sidebar () {
+export default function Sidebar () {
   const { mobileOpen, setMobileOpen, isActive, navigate } = useSidebarContext();
 
   // Sidebar nav content extracted for reuse
@@ -157,4 +159,4 @@ export function Sidebar () {
       </AnimatePresence>
     </>
   );
-};
+}

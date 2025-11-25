@@ -1,9 +1,11 @@
 import { createBrowserRouter, Navigate } from 'react-router';
-import { LandingPage } from '../components/LandingPage';
-import { ProductVisualizer } from '../components/imageGeneration/ProductVisualizer';
-import { ChatPage } from '../components/ChatPage';
-import { AudioToolsPage } from '../components/AudioToolsPage';
 import App from '../../App';
+import { lazy } from 'react';
+
+const ProductVisualizer = lazy(() => import('../components/imageGeneration/ProductVisualizer'));
+const ChatPage = lazy(() => import('../components/ChatPage'));
+const AudioToolsPage = lazy(() => import('../components/AudioToolsPage'));
+const LandingPage = lazy(() => import('../components/LandingPage'));
 
 export const router = createBrowserRouter([
   {

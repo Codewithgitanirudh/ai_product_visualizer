@@ -1,4 +1,3 @@
-import React from 'react';
 import { ButtonLoader } from '../Loader';
 
 interface EditPanelProps {
@@ -8,7 +7,7 @@ interface EditPanelProps {
   isEditing: boolean;
 }
 
-export const EditPanel: React.FC<EditPanelProps> = ({ prompt, onPromptChange, onSubmit, isEditing }) => {
+export default function EditPanel({ prompt, onPromptChange, onSubmit, isEditing }: EditPanelProps) {
   return (
     <div className="bg-white p-6 rounded-xl border border-base-400 shadow-sm hover:shadow-md transition-shadow duration-200 animate-fadeIn">
       <div className="flex items-center gap-2 mb-4">

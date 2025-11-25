@@ -80,13 +80,13 @@ const ImageCard: React.FC<{
   );
 };
 
-export const GeneratedImageGrid: React.FC<GeneratedImageGridProps> = ({
+export default function GeneratedImageGrid({
   isLoading,
   error,
   images,
   selectedImageId,
   onImageSelect,
-}) => {
+}: GeneratedImageGridProps) {
   return (
     <div className="bg-white p-6 rounded-xl border border-base-400 shadow-sm min-h-[300px] flex flex-col">
       <div className="flex items-center justify-between mb-6">

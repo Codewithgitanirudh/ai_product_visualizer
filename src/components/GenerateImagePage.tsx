@@ -1,7 +1,7 @@
-import React from 'react';
+
 import { ImageIcon } from 'lucide-react';
 
-export const GenerateImagePage: React.FC = () => {
+export default function GenerateImagePage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="bg-base-100 rounded-lg shadow-md p-8">
@@ -17,5 +17,5 @@ export const GenerateImagePage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
