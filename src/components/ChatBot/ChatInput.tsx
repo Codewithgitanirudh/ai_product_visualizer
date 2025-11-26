@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Send, Image as ImageIcon, Mic, MicOff, X } from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import { Send, Image as ImageIcon, Mic, MicOff, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ChatInputProps {
   onSend: (text: string, image?: File) => void;
@@ -7,7 +8,7 @@ interface ChatInputProps {
 }
 
 export default function ChatInput({ onSend, disabled }: ChatInputProps) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -28,7 +29,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
     if ((!text.trim() && !selectedImage) || disabled) return;
 
     onSend(text, selectedImage || undefined);
-    setText('');
+    setText("");
     setSelectedImage(null);
   };
 
@@ -42,11 +43,8 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   const toggleVoiceInput = () => {
     if (isListening) {
       setIsListening(false);
-      // Stop listening logic would go here
     } else {
       setIsListening(true);
-      // Start listening logic would go here
-      // For now, let's simulate voice input after 2 seconds
       setTimeout(() => {
         setText((prev) => prev + " Hello, this is a voice message.");
         setIsListening(false);
@@ -55,32 +53,47 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative">
-      {previewUrl && (
-        <div className="absolute bottom-full left-0 mb-2 p-2 bg-base-100 rounded-lg shadow-lg border border-border-light">
-          <div className="relative">
-            <img src={previewUrl} alt="Preview" className="h-20 w-auto rounded" />
-            <button
-              type="button"
-              onClick={() => setSelectedImage(null)}
-              className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </div>
-        </div>
-      )}
+    <form onSubmit={handleSubmit} className="relative max-w-4xl mx-auto w-full">
+      <AnimatePresence>
+        {previewUrl && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            className="absolute bottom-full left-0 mb-4 p-2 bg-base-100/80 backdrop-blur-md rounded-2xl shadow-xl border border-border-light"
+          >
+            <div className="relative group">
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className="h-24 w-auto rounded-xl object-cover"
+              />
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                type="button"
+                onClick={() => setSelectedImage(null)}
+                className="absolute -top-2 -right-2 p-1.5 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <div className="flex items-end gap-2 bg-base-100 p-2 rounded-xl border border-border-medium focus-within:border-brand-primary focus-within:ring-1 focus-within:ring-brand-primary transition-all shadow-sm">
-        <button
+      <div className="flex items-end gap-2 bg-base-100/80 backdrop-blur-xl p-2 rounded-4xl border border-border-medium/50 transition-all duration-300 focus-within:border-brand-primary/30 focus-within:ring-4 focus-within:ring-brand-primary/5">
+        <motion.button
+          whileHover={{ scale: 1.05, backgroundColor: "var(--base-200)" }}
+          whileTap={{ scale: 0.95 }}
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="p-2 text-content-300 hover:text-brand-primary hover:bg-base-200 rounded-lg transition-colors"
+          className="p-3 text-content-300 hover:text-brand-primary rounded-full transition-colors cursor-pointer"
           title="Upload Image"
           disabled={disabled}
         >
           <ImageIcon className="w-5 h-5" />
-        </button>
+        </motion.button>
         <input
           type="file"
           ref={fileInputRef}
@@ -89,28 +102,39 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
           className="hidden"
         />
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           type="button"
           onClick={toggleVoiceInput}
-          className={`p-2 rounded-lg transition-colors ${
-            isListening 
-              ? 'text-red-500 bg-red-50 animate-pulse' 
-              : 'text-content-300 hover:text-brand-primary hover:bg-base-200'
+          className={`p-3 rounded-full transition-all duration-300 ${
+            isListening
+              ? "text-red-500 bg-red-50 shadow-inner"
+              : "text-content-300 hover:text-brand-primary hover:bg-base-200 cursor-pointer"
           }`}
           title="Voice Input"
           disabled={disabled}
         >
-          {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-        </button>
+          {isListening ? (
+            <motion.div
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+            >
+              <MicOff className="w-5 h-5" />
+            </motion.div>
+          ) : (
+            <Mic className="w-5 h-5" />
+          )}
+        </motion.button>
 
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder={isListening ? "Listening..." : "Type a message..."}
-          className="flex-1 max-h-32 min-h-[44px] py-2.5 px-2 bg-transparent border-none focus:ring-0 resize-none text-content-100 placeholder:text-content-300"
+          className="flex-1 max-h-32 min-h-[48px] py-3 px-2 bg-transparent border-none text-content-100 placeholder:text-content-300 focus:outline-none resize-none text-[15px] leading-relaxed"
           rows={1}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
+            if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
               handleSubmit(e);
             }
@@ -118,13 +142,15 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
           disabled={disabled}
         />
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           type="submit"
           disabled={(!text.trim() && !selectedImage) || disabled}
-          className="p-2 bg-brand-primary text-white rounded-lg hover:bg-brand-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+          className="p-3 bg-brand-primary text-white rounded-full hover:bg-brand-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg cursor-pointer m-1"
         >
-          <Send className="w-5 h-5" />
-        </button>
+          <Send className="w-5 h-5 ml-0.5" />
+        </motion.button>
       </div>
     </form>
   );
