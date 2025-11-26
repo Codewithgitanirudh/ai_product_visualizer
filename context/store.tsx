@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { ChatMessage, ChatRole } from "../types";
+import { ChatMessage, ChatRole, Content } from "../types";
 import { openRouterChat } from "../src/services/openRouter";
+import { fileToBase64 } from "../utils/fileUtils";
 
 interface ChatState {
   messages: ChatMessage[];
@@ -32,77 +33,95 @@ export const useChatStore = create<ChatState>((set, get) => ({
   setTyping: (isTyping) => set({ isTyping }),
 
   sendMessage: async (text: string, image?: File) => {
-    const { messages, addMessage, setTyping } = get();
+    const addMessage = get().addMessage;
+    const setTyping = get().setTyping;
 
-    const newMessage: ChatMessage = {
-      id: (Date.now() + 1).toString(),
+    // Build user message
+    const userMessage: ChatMessage = {
+      id: (Date.now() + Math.random()).toString(),
       role: "user",
       content: [
         {
           type: "text",
           text,
-        },
+        } as Content,
       ],
       timestamp: Date.now(),
     };
 
-    // Optimistically add user message
-    // We need to handle the image async conversion if present,
-    // but for the store logic, we can do it inside here.
-
+    // If there is an image, convert it to data URL and push as additional content block
     if (image) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        newMessage.content.push({
+      try {
+        const { base64, mimeType } = await fileToBase64(image);
+        userMessage.content.push({
           type: "input_image",
-          image_url: reader.result as string,
-        });
-
-        // Add message with image
-        addMessage(newMessage);
-
-        // Trigger AI response
-        await handleAIResponse();
-      };
-      reader.readAsDataURL(image);
-    } else {
-      addMessage(newMessage);
-      await handleAIResponse();
+          image_url: `data:${mimeType};base64,${base64}`,
+        } as unknown as Content);
+      } catch (err) {
+        console.error("Failed to convert image:", err);
+        // still continue without image
+      }
     }
 
-    async function handleAIResponse() {
-      setTyping(true);
-      try {
-        // Get latest messages from state after the update
-        const currentMessages = get().messages;
+    // Optimistically add the user message to UI
+    addMessage(userMessage);
 
-        const apiMessages = currentMessages.map(({ role, content }) => ({
-          role,
-          content,
-        }));
+    // Ask the model and add assistant reply
+    setTyping(true);
+    try {
+      // Prepare api-friendly messages: we only send role + content
+      const apiMessages = get().messages.map(({ role, content }) => ({
+        role,
+        content,
+      }));
 
-        const response = await openRouterChat({ messages: apiMessages });
+      // call your openRouter wrapper
+      const { assistantMessage, reasoningDetails } = await openRouterChat({
+        messages: apiMessages,
+      });
 
-        if (response.choices && response.choices[0]) {
-          const aiMessage: ChatMessage = {
-            id: (Date.now() + 2).toString(),
-            role: "assistant",
-            content: [
-              {
-                type: "text",
-                text: response.choices[0].message.content,
-              },
-            ],
-            timestamp: Date.now(),
-          };
-          addMessage(aiMessage);
+      if (assistantMessage) {
+        // assistantMessage may have different shapes:
+        // - assistantMessage.content could be an array of content blocks (preferred)
+        // - or it could be a plain string (older/other formats)
+        let assistantContent: Content[];
+
+        if (Array.isArray(assistantMessage.content)) {
+          assistantContent = assistantMessage.content as Content[];
+        } else if (typeof assistantMessage.content === "string") {
+          assistantContent = [{ type: "text", text: assistantMessage.content }];
+        } else {
+          // Fallback: try to stringify
+          assistantContent = [
+            { type: "text", text: String(assistantMessage.content) },
+          ];
         }
-      } catch (error) {
-        console.error("Error calling AI:", error);
-        // Optionally add an error message to the chat
-      } finally {
-        setTyping(false);
+
+        // attach reasoning_details to the assistant message if available
+        const assistantChatMessage: ChatMessage = {
+          id: (Date.now() + Math.random()).toString(),
+          role: "assistant",
+          content: assistantContent,
+          timestamp: Date.now(),
+          // @ts-expect-error optional field - add if your ChatMessage supports metadata
+          reasoning_details: reasoningDetails ?? undefined,
+        };
+
+        addMessage(assistantChatMessage);
       }
+    } catch (err) {
+      console.error("Error calling AI:", err);
+      // Optionally add an error message to the chat
+      addMessage({
+        id: (Date.now() + Math.random()).toString(),
+        role: "assistant",
+        content: [
+          { type: "text", text: "Sorry — I couldn't reach the AI service." },
+        ],
+        timestamp: Date.now(),
+      });
+    } finally {
+      setTyping(false);
     }
   },
 }));
