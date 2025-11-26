@@ -18,20 +18,17 @@ export default function ChatPage() {
   }, [messages, isTyping]);
 
   return (
-    <div className="max-w-5xl mx-auto h-[calc(100vh-6rem)] flex flex-col bg-base-50/50 backdrop-blur-sm rounded-2xl shadow-md border border-border-light overflow-hidden">
-      <div className="bg-base-100/90 backdrop-blur-md p-4 flex items-center gap-4 border-b border-border-light z-10 shadow-sm">
+    <div className="w-full md:max-w-5xl mx-auto md:h-[calc(100vh-6rem)] h-[calc(100vh-8rem)] flex flex-col bg-base-50/50 backdrop-blur-sm rounded-2xl md:shadow-md md:border border-border-light overflow-hidden md:mt-0 -mt-5">
+      <div className="bg-base-100/90 backdrop-blur-md p-4 md:flex items-center gap-4 border-b border-border-light z-10 shadow-sm hidden">
         <div className="p-2.5 bg-brand-primary/10 rounded-xl">
           <MessageSquare className="w-6 h-6 text-brand-primary" />
         </div>
         <div>
           <h1 className="text-xl font-bold text-content-100">Chat With AI</h1>
-          <p className="text-sm text-content-300 font-medium">
-            Powered by Advanced Models
-          </p>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 scroll-smooth custom-scrollbar">
+      <div className="flex-1  overflow-y-auto w-full px-4 md:p-8 space-y-6 scroll-smooth custom-scrollbar">
         {messages.map((msg) => (
           <ChatMessage key={msg.id} message={msg} />
         ))}
@@ -67,7 +64,7 @@ export default function ChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 bg-base-100/90 backdrop-blur-md border-t border-border-light">
+      <div className="md:p-4 md:bg-base-100/90 backdrop-blur-md md:border-t md:border-border-light">
         <ChatInput onSend={sendMessage} disabled={isTyping} />
       </div>
     </div>

@@ -82,13 +82,13 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
         )}
       </AnimatePresence>
 
-      <div className="flex items-end gap-2 bg-base-100/80 backdrop-blur-xl p-2 rounded-4xl border border-border-medium/50 transition-all duration-300 focus-within:border-brand-primary/30 focus-within:ring-4 focus-within:ring-brand-primary/5">
+      <div className="flex items-center gap-2 bg-base-100/80 backdrop-blur-xl p-2 rounded-4xl border border-border-medium/50 transition-all duration-300 focus-within:border-brand-primary/30 focus-within:ring-4 focus-within:ring-brand-primary/5">
         <motion.button
           whileHover={{ scale: 1.05, backgroundColor: "var(--base-200)" }}
           whileTap={{ scale: 0.95 }}
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="p-3 text-content-300 hover:text-brand-primary rounded-full transition-colors cursor-pointer"
+          className="md:p-3 p-2 text-content-300 hover:text-brand-primary rounded-full transition-colors cursor-pointer"
           title="Upload Image"
           disabled={disabled}
         >
@@ -107,7 +107,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
           whileTap={{ scale: 0.95 }}
           type="button"
           onClick={toggleVoiceInput}
-          className={`p-3 rounded-full transition-all duration-300 ${
+          className={`md:p-3 p-2 rounded-full transition-all duration-300 ${
             isListening
               ? "text-red-500 bg-red-50 shadow-inner"
               : "text-content-300 hover:text-brand-primary hover:bg-base-200 cursor-pointer"
