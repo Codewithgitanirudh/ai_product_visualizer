@@ -13,6 +13,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
     if (selectedImage) {
@@ -23,6 +24,14 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
       setPreviewUrl(null);
     }
   }, [selectedImage]);
+
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,15 +49,70 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
     }
   };
 
+  const startListening = () => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onresult = (event: any) => {
+      let finalTranscript = "";
+      let interimTranscript = "";
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+
+      if (finalTranscript) {
+        setText((prev) => {
+          const newText =
+            prev + (prev && !prev.endsWith(" ") ? " " : "") + finalTranscript;
+          return newText;
+        });
+      }
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+  };
+
   const toggleVoiceInput = () => {
     if (isListening) {
-      setIsListening(false);
+      stopListening();
     } else {
-      setIsListening(true);
-      setTimeout(() => {
-        setText((prev) => prev + " Hello, this is a voice message.");
-        setIsListening(false);
-      }, 2000);
+      startListening();
     }
   };
 
